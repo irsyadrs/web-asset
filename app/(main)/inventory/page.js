@@ -19,7 +19,6 @@ export default function InventoryPage() {
   const itemsPerPage = 5;
 
   const paginatedAssets = dummyAssets.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-  console.log({test})
 
   return (
     <main className="p-6 bg-gray-100 min-h-screen space-y-6">
