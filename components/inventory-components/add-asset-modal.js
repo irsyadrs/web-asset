@@ -15,14 +15,6 @@ export default function AddAssetModal({ isOpen, onClose }) {
           </button>
         </div>
         <p className="mt-4 text-gray-600">Isi form untuk menambahkan aset baru.</p>
-        <div className="mt-6 flex justify-end">
-          <button
-            className="px-4 py-2 text-sm text-white bg-gray-500 rounded-md hover:bg-gray-600"
-            onClick={onClose}
-          >
-            Tutup
-          </button>
-        </div>
       </div>
     </div>
   );
