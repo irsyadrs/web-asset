@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { FunnelIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Modal from "../modal";
+import AddAssetForm from "./add-asset-form"; 
 
 export default function InventoryTitle() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div>
+    <>
       <div className="flex items-center justify-between pb-4 border-b">
         <h1 className="text-xl font-bold text-gray-700">Inventory</h1>
         <div className="flex gap-2">
@@ -23,7 +24,10 @@ export default function InventoryTitle() {
           </button>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Tambah Aset">
+        <AddAssetForm onClose={() => setIsModalOpen(false)} />
+      </Modal>
+    </>
   );
 }

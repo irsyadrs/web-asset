@@ -11,7 +11,7 @@ export default function Header() {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 fixed w-[calc(100%-250px)] z-10 ml-[250px]">
+    <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 fixed w-[calc(100%-250px)] z-0 ml-[250px]">
       <div className="max-w-screen-xl w-full mx-auto flex items-center justify-between">
         <div className="relative flex items-center max-w-md w-full">
           <MagnifyingGlassIcon className="absolute left-3 w-5 h-5 text-gray-400" />
