@@ -136,7 +136,7 @@ export default function CategoriesPage() {
   }, [activeCategory]);
 
   return (
-    <main className="p-6 bg-gray-100 min-h-screen space-y-6">
+    <main className="p-6 bg-gray-100 min-h-screen">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-700">Categories</h1>
       </div>

@@ -21,7 +21,7 @@ export default function InventoryPage() {
   const paginatedAssets = dummyAssets.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <main className="p-6 bg-gray-100 min-h-screen space-y-6">
+    <main className="p-6 bg-gray-100 min-h-screen">
       <InventoryTitle />
       <AssetTable assets={paginatedAssets} />
       <Pagination
