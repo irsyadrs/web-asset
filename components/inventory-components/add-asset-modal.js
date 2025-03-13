@@ -6,7 +6,7 @@ export default function AddAssetModal({ isOpen, onClose }) {
   if (!isOpen) return null; // Jangan render jika modal tidak terbuka
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <div className="flex justify-between items-center border-b pb-2">
           <h2 className="text-lg font-bold">Tambah Aset</h2>
