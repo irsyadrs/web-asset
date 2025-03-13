@@ -27,10 +27,10 @@ export default function CategoryTable({ data }) {
                 <td className="px-4 py-4 text-sm text-gray-900">{item.title}</td>
                 <td className="px-4 py-4 text-sm text-gray-900">{item.description}</td>
                 <td className="px-4 py-4 text-center text-sm font-medium">
-                  <button className="text-blue-500 hover:text-blue-700 mx-2">
+                  <button className="mr-3 text-blue-500 hover:text-blue-700 mx-2">
                     <PencilSquareIcon className="h-5 w-5" />
                   </button>
-                  <button className="text-red-500 hover:text-red-700">
+                  <button className="ml-3 text-red-500 hover:text-red-700">
                     <TrashIcon className="h-5 w-5" />
                   </button>
                 </td>
