@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FunnelIcon, PlusIcon } from "@heroicons/react/24/outline";
-import AddAssetModal from "./add-asset-modal";
+import Modal from "../modal";
 
 export default function InventoryTitle() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,9 +23,7 @@ export default function InventoryTitle() {
           </button>
         </div>
       </div>
-
-      {/* Modal */}
-      <AddAssetModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
