@@ -7,7 +7,6 @@ export default function CategoryTable({ data }) {
     <div className="bg-white rounded-lg shadow overflow-hidden mt-4">
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
-          {/* Header Tabel */}
           <thead className="bg-gray-50">
             <tr>
               {['Code', 'Abbrv.', 'Title', 'Description', 'Actions'].map((col) => (
@@ -20,8 +19,6 @@ export default function CategoryTable({ data }) {
               ))}
             </tr>
           </thead>
-
-          {/* Body Tabel */}
           <tbody className="bg-white divide-y divide-gray-200">
             {data.map((item) => (
               <tr key={item.code} className="hover:bg-gray-50">

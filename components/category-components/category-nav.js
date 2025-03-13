@@ -5,7 +5,6 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 export default function CategoryNav({ categories, activeCategory, setActiveCategory }) {
   return (
     <div className="flex items-center justify-between pb-4 border-b">
-      {/* Tombol Navigasi */}
       <div className="flex gap-2">
         {Object.keys(categories).map((cat) => (
           <button
@@ -21,8 +20,6 @@ export default function CategoryNav({ categories, activeCategory, setActiveCateg
           </button>
         ))}
       </div>
-
-      {/* Tombol Tambah Kategori */}
       <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
         <PlusIcon className="w-4 h-4" /> Tambah Kategori
       </button>
