@@ -138,7 +138,7 @@ export default function CategoriesPage() {
   return (
     <main className="p-6 bg-gray-100 min-h-screen">
       <div className="flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-700">Categories</h1>
+        <h1 className="text-xl font-bold text-gray-700 mb-2">Categories</h1>
       </div>
 
       {/* Navigasi kategori */}
