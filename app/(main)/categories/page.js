@@ -111,7 +111,6 @@ export default function CategoriesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 5;
 
-  // Data kategori yang sedang aktif
   const currentCategoryData = categories[activeCategory] || [];
   const totalItems = currentCategoryData.length;
   const paginatedCategory = currentCategoryData.slice(
@@ -119,18 +118,16 @@ export default function CategoriesPage() {
     currentPage * itemsPerPage
   );
 
-  // Handle buka modal
   const onOpenModal = useCallback(() => {
     setIsModalOpen(true);
   }, []);
 
-  // Handle tutup modal
   const onCloseModal = useCallback(() => {
     console.log("Menutup modal!");
     setIsModalOpen(false);
   }, []);
 
-  // Reset halaman ke pertama jika kategori berubah
+  
   useEffect(() => {
     setCurrentPage(1);
   }, [activeCategory]);
@@ -141,7 +138,6 @@ export default function CategoriesPage() {
         <h1 className="text-xl font-bold text-gray-700 mb-2">Categories</h1>
       </div>
 
-      {/* Navigasi kategori */}
       <CategoryNav
         categories={categories}
         activeCategory={activeCategory}
@@ -149,10 +145,8 @@ export default function CategoriesPage() {
         onOpenModal={onOpenModal}
       />
 
-      {/* Tabel kategori */}
       <CategoryTable data={paginatedCategory} />
 
-      {/* Pagination */}
       <Pagination
         totalItems={totalItems}
         itemsPerPage={itemsPerPage}
@@ -160,7 +154,6 @@ export default function CategoriesPage() {
         onPageChange={setCurrentPage}
       />
 
-      {/* Modal tambah kategori */}
     </main>
   );
 }

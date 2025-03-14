@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
