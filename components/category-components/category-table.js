@@ -62,13 +62,13 @@ export default function CategoryTable({ data }) {
         <p className="text-sm ">Apakah anda yakin ingin menghapus <strong>{selectedItem?.title}</strong>?</p>
         <div className="flex justify-end mt-4">
           <button
-            className="px-4 py-2 text-sm bg-gray-300 text-gray-800  hover:bg-gray-400 hover:text-gray-900 rounded-lg mr-2"
+            className="px-4 py-2 text-sm bg-gray-200 text-gray-700  hover:bg-gray-300 rounded-lg mr-2"
             onClick={handleCloseModal}
           >
             Batal
           </button>
           <button
-            className="px-4 py-2 text-sm bg-red-600 text-stone-100 hover:bg-red-700 hover:text-stone-50 rounded-lg"
+            className="px-4 py-2 text-sm bg-red-600 text-white hover:bg-red-700 rounded-lg"
             onClick={() => {
               console.log('Deleting:', selectedItem);
               handleCloseModal();
