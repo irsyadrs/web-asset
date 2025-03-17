@@ -15,17 +15,36 @@ const dummyAssets = [
 ];
 
 export default function InventoryPage() {
+  const [selectedFilters, setSelectedFilters] = useState({ division: [], status: [] });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const paginatedAssets = dummyAssets.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  // ✅ Fungsi untuk menerapkan filter dari modal
+  const handleFilterApply = (filters) => {
+    setSelectedFilters(filters);
+    setCurrentPage(1); // Reset ke halaman pertama setelah filter diterapkan
+  };
+
+  // ✅ Filter sebelum pagination
+  const filteredAssets = dummyAssets.filter(asset =>
+    (selectedFilters.division.length === 0 || selectedFilters.division.includes(asset.division)) &&
+    (selectedFilters.status.length === 0 || selectedFilters.status.includes(asset.status))
+  );
+
+  // ✅ Paginasi setelah filter diterapkan
+  const paginatedAssets = filteredAssets.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <main className="p-6 bg-gray-100 min-h-screen">
-      <InventoryTitle />
+      {/* Kirim handleFilterApply agar InventoryTitle bisa menerapkan filter */}
+      <InventoryTitle onFilterApply={handleFilterApply} />
+      
+      {/* Kirim selectedFilters ke AssetTable agar data bisa difilter */}
       <AssetTable assets={paginatedAssets} />
+      
+      {/* Pagination tetap diterapkan setelah filtering */}
       <Pagination
-        totalItems={dummyAssets.length}
+        totalItems={filteredAssets.length}
         itemsPerPage={itemsPerPage}
         currentPage={currentPage}
         onPageChange={setCurrentPage}

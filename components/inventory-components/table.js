@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   CheckCircleIcon,
   XCircleIcon,
@@ -12,6 +12,7 @@ import {
 export default function AssetTable({ assets }) {
   const [selectedAll, setSelectedAll] = useState(false);
   const [selectedAssets, setSelectedAssets] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: "assetNumber", direction: "asc" });
 
   const handleSelectAll = () => {
     setSelectedAll(!selectedAll);
@@ -20,17 +21,13 @@ export default function AssetTable({ assets }) {
 
   const handleSelectAsset = (id) => {
     setSelectedAssets((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((assetId) => assetId !== id)
-        : [...prevSelected, id]
+      prevSelected.includes(id) ? prevSelected.filter((assetId) => assetId !== id) : [...prevSelected, id]
     );
   };
 
   const formatDate = (dateString) => {
     const options = { day: "2-digit", month: "short", year: "numeric" };
-    return new Intl.DateTimeFormat("id-ID", options).format(
-      new Date(dateString)
-    );
+    return new Intl.DateTimeFormat("id-ID", options).format(new Date(dateString));
   };
 
   const getStatusConfig = (status) => {
@@ -46,6 +43,7 @@ export default function AssetTable({ assets }) {
     }
   };
 
+  // ✅ **Mengembalikan warna berdasarkan divisi**
   const getDivisionConfig = (division) => {
     switch (division) {
       case "IT":
@@ -65,6 +63,37 @@ export default function AssetTable({ assets }) {
     }
   };
 
+  const handleSort = useCallback((key) => {
+    setSortConfig((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+    }));
+  }, []);
+
+  const sortedAssets = [...assets].sort((a, b) => {
+    if (sortConfig.key === "assetNumber") {
+      return sortConfig.direction === "asc"
+        ? a.assetNumber.localeCompare(b.assetNumber)
+        : b.assetNumber.localeCompare(a.assetNumber);
+    }
+    if (sortConfig.key === "assetName") {
+      return sortConfig.direction === "asc"
+        ? a.assetName.localeCompare(b.assetName)
+        : b.assetName.localeCompare(a.assetName);
+    }
+    if (sortConfig.key === "pic") {
+      return sortConfig.direction === "asc"
+        ? a.pic.localeCompare(b.pic)
+        : b.pic.localeCompare(a.pic);
+    }
+    if (sortConfig.key === "lastUpdate") {
+      return sortConfig.direction === "asc"
+        ? new Date(a.lastUpdate) - new Date(b.lastUpdate)
+        : new Date(b.lastUpdate) - new Date(a.lastUpdate);
+    }
+    return 0;
+  });
+
   return (
     <div className="flex-1 bg-white rounded-lg shadow overflow-hidden">
       <div className="overflow-x-auto">
@@ -80,31 +109,30 @@ export default function AssetTable({ assets }) {
                 />
               </th>
               {[
-                "No Aset",
-                "Title Aset",
-                "PIC",
-                "Divisi",
-                "Status",
-                "Update Terakhir",
-                "Actions",
-              ].map((col) => (
+                { label: "No Aset", key: "assetNumber" },
+                { label: "Title Aset", key: "assetName" },
+                { label: "PIC", key: "pic" },
+                { label: "Divisi", key: null },
+                { label: "Status", key: null },
+                { label: "Update Terakhir", key: "lastUpdate" },
+                { label: "Actions", key: null },
+              ].map(({ label, key }) => (
                 <th
-                  key={col}
-                  className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  key={label}
+                  className={`px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                    key ? "cursor-pointer" : ""
+                  }`}
+                  onClick={() => key && handleSort(key)}
                 >
-                  {col}
+                  {label} {sortConfig.key === key ? (sortConfig.direction === "asc" ? "↑" : "↓") : ""}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {assets.map((asset) => {
-              const { color: statusColor, icon: Icon } = getStatusConfig(
-                asset.status
-              );
-              const { color: divisionColor } = getDivisionConfig(
-                asset.division
-              );
+            {sortedAssets.map((asset) => {
+              const { color: statusColor, icon: Icon } = getStatusConfig(asset.status);
+              const { color: divisionColor } = getDivisionConfig(asset.division);
               const formattedDate = formatDate(asset.lastUpdate);
 
               return (
@@ -117,40 +145,26 @@ export default function AssetTable({ assets }) {
                       onChange={() => handleSelectAsset(asset.id)}
                     />
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-900">
-                    {asset.assetNumber}
-                  </td>
-                  <td className="px-4 py-4 text-sm text-gray-900">
-                    {asset.assetName}
-                  </td>
-                  <td className="px-4 py-4 text-sm text-gray-900">
-                    {asset.pic}
-                  </td>
+                  <td className="px-4 py-4 text-sm text-gray-900">{asset.assetNumber}</td>
+                  <td className="px-4 py-4 text-sm text-gray-900">{asset.assetName}</td>
+                  <td className="px-4 py-4 text-sm text-gray-900">{asset.pic}</td>
                   <td className="px-4 py-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-normal ${divisionColor}`}
-                    >
+                    <span className={`px-3 py-1 rounded-full text-xs font-normal ${divisionColor}`}>
                       {asset.division}
                     </span>
                   </td>
                   <td className="px-4 py-4">
-                    <div
-                      className={`inline-flex items-center rounded-full px-3 py-1 ${statusColor}`}
-                    >
+                    <div className={`inline-flex items-center rounded-full px-3 py-1 ${statusColor}`}>
                       <Icon className="h-4 w-4 mr-2" />
-                      <span className="text-xs font-normal">
-                        {asset.status}
-                      </span>
+                      <span className="text-xs font-normal">{asset.status}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-900">
-                    {formattedDate}
-                  </td>
-                  <td className="px-4 py-4 text-center text-sm font-medium">
-                    <button className="mr-3 text-blue-500 hover:text-blue-700 mx-2">
+                  <td className="px-4 py-4 text-sm text-gray-900">{formattedDate}</td>
+                  <td className="px-4 py-4 text-left text-sm font-medium flex gap-2">
+                    <button className="text-blue-500 hover:text-blue-700">
                       <PencilSquareIcon className="h-5 w-5" />
                     </button>
-                    <button className="ml-3 text-red-500 hover:text-red-700">
+                    <button className="text-red-500 hover:text-red-700">
                       <TrashIcon className="h-5 w-5" />
                     </button>
                   </td>
