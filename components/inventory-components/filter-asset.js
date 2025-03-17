@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Modal from "../modal"; // Menggunakan Modal yang sudah dipisah
+import Modal from "../modal";
 
-export default function FilterModal({ isOpen, onClose, onApply, selectedFilters }) {
+export default function FilterModal({ isOpen, onClose, onApply = () => {}, selectedFilters }) {
   const [selectedDivision, setSelectedDivision] = useState(selectedFilters.division || []);
   const [selectedStatus, setSelectedStatus] = useState(selectedFilters.status || []);
 
@@ -19,9 +19,12 @@ export default function FilterModal({ isOpen, onClose, onApply, selectedFilters 
     }
   };
 
-  const resetFilters = () => {
+  // ✅ **Perbaikan: Reset filter & langsung tutup modal**
+  const handleResetFilters = () => {
     setSelectedDivision([]);
     setSelectedStatus([]);
+    onApply({ division: [], status: [] }); // Langsung reset filter
+    onClose(); // Tutup modal
   };
 
   const applyFilters = () => {
@@ -32,7 +35,6 @@ export default function FilterModal({ isOpen, onClose, onApply, selectedFilters 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Filter Aset">
       <div className="space-y-4">
-        {/* Filter Divisi */}
         <div>
           <h3 className="text-sm font-semibold text-gray-700">Divisi</h3>
           {["IT", "HCGA", "Brand", "General", "Finance"].map((division) => (
@@ -48,7 +50,6 @@ export default function FilterModal({ isOpen, onClose, onApply, selectedFilters 
           ))}
         </div>
 
-        {/* Filter Status */}
         <div>
           <h3 className="text-sm font-semibold text-gray-700">Status</h3>
           {["Tersedia", "Maintenance", "Digunakan"].map((status) => (
@@ -64,10 +65,10 @@ export default function FilterModal({ isOpen, onClose, onApply, selectedFilters 
           ))}
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-end gap-2">
+          {/* ✅ Button Reset langsung reset filter & menutup modal */}
           <button
-            onClick={resetFilters}
+            onClick={handleResetFilters}
             className="px-4 py-2 text-sm text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300"
           >
             Reset
