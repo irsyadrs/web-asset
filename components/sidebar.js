@@ -1,6 +1,5 @@
 "use client";
 
-
 import Link from 'next/link';
 import { HomeIcon, CubeIcon, TagIcon, TruckIcon, WrenchScrewdriverIcon, MapIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 
@@ -17,7 +16,11 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 h-screen bg-white text-gray-900 border-r border-gray-200 p-4">
-      <h2 className="text-lg font-bold px-3 mb-4 text-gray-700">Web App</h2>
+      {/* ✅ Buat "Web App" bisa diklik */}
+      <Link href="/dashboard" className="block px-3 mb-4 text-lg font-bold text-gray-600 hover:text-gray-800 transition duration-150 cursor-pointer">
+        Web App
+      </Link>
+
       <nav>
         <ul className="space-y-1">
           {menuItems.map(({ href, label, icon }) => (
