@@ -18,17 +18,17 @@ export default function InventoryTitle({ onFilterApply }) {
 
   return (
     <>
-      <div className="flex items-center justify-between pb-4 border-b">
-        <h1 className="text-xl font-bold text-gray-700">Inventory</h1>
-        <div className="flex gap-2">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between pb-4 border-b gap-2 md:gap-4">
+        <h1 className="text-lg md:text-xl font-bold text-gray-700">Inventory</h1>
+        <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
           <button
-            className="flex text-sm items-center gap-2 px-2 text-gray-900 py-2 border rounded-md hover:bg-gray-100"
+            className="flex text-sm items-center gap-2 px-3 py-2 border rounded-md hover:bg-gray-100 w-full md:w-auto"
             onClick={() => setIsFilterModalOpen(true)}
           >
             <FunnelIcon className="w-5 h-5" /> Filter
           </button>
           <button
-            className="flex text-sm items-center gap-2 px-2 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+            className="flex text-sm items-center gap-2 px-3 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 w-full md:w-auto"
             onClick={() => setIsAddModalOpen(true)}
           >
             <PlusIcon className="w-5 h-5" /> Tambah Aset

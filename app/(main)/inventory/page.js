@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import InventoryTitle from "@/components/inventory-components/title";
@@ -43,12 +43,14 @@ export default function InventoryPage() {
       <AssetTable assets={paginatedAssets} />
       
       {/* Pagination tetap diterapkan setelah filtering */}
-      <Pagination
-        totalItems={filteredAssets.length}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
+      {filteredAssets.length > 0 && (
+        <Pagination
+          totalItems={filteredAssets.length}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </main>
   );
 }

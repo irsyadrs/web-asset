@@ -43,7 +43,6 @@ export default function AssetTable({ assets }) {
     }
   };
 
-  // ✅ **Mengembalikan warna berdasarkan divisi**
   const getDivisionConfig = (division) => {
     switch (division) {
       case "IT":
@@ -136,8 +135,8 @@ export default function AssetTable({ assets }) {
               const formattedDate = formatDate(asset.lastUpdate);
 
               return (
-                <tr key={asset.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-4">
+                <tr key={asset.id} className="hover:bg-gray-50 text-sm">
+                  <td className="px-4 py-3">
                     <input
                       type="checkbox"
                       className="h-4 w-4 rounded border-gray-300"
@@ -145,22 +144,22 @@ export default function AssetTable({ assets }) {
                       onChange={() => handleSelectAsset(asset.id)}
                     />
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-900">{asset.assetNumber}</td>
-                  <td className="px-4 py-4 text-sm text-gray-900">{asset.assetName}</td>
-                  <td className="px-4 py-4 text-sm text-gray-900">{asset.pic}</td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3 text-gray-900">{asset.assetNumber}</td>
+                  <td className="px-4 py-3 text-gray-900">{asset.assetName}</td>
+                  <td className="px-4 py-3 text-gray-900">{asset.pic}</td>
+                  <td className="px-4 py-3">
                     <span className={`px-3 py-1 rounded-full text-xs font-normal ${divisionColor}`}>
                       {asset.division}
                     </span>
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-3">
                     <div className={`inline-flex items-center rounded-full px-3 py-1 ${statusColor}`}>
                       <Icon className="h-4 w-4 mr-2" />
                       <span className="text-xs font-normal">{asset.status}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-900">{formattedDate}</td>
-                  <td className="px-4 py-4 text-left text-sm font-medium flex gap-2">
+                  <td className="px-4 py-3 text-gray-900">{formattedDate}</td>
+                  <td className="px-4 py-3 text-left flex gap-2">
                     <button className="text-blue-500 hover:text-blue-700">
                       <PencilSquareIcon className="h-5 w-5" />
                     </button>
