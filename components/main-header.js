@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import { useState } from "react";
 import { MagnifyingGlassIcon, ChatBubbleOvalLeftIcon, BellIcon, UserIcon } from "@heroicons/react/24/outline";
@@ -22,10 +23,10 @@ export default function Header() {
 
         {/* Icons */}
         <div className="flex items-center space-x-4">
-          <button className="text-gray-500">
+          <button className="text-gray-600 hover:text-gray-800">
             <ChatBubbleOvalLeftIcon className="w-6 h-6" />
           </button>
-          <button className="text-gray-500">
+          <button className="text-gray-600 hover:text-gray-800">
             <BellIcon className="w-6 h-6" />
           </button>
 
