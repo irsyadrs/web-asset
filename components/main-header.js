@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 import {
-  Bars3Icon,
+  // Bars3Icon, // Dihilangkan karena tidak ada tombol menu mobile
   ChatBubbleOvalLeftIcon,
   BellIcon,
   UserIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 
-export default function Header({ setSidebarOpen }) {
+// setSidebarOpen tidak lagi diperlukan sebagai prop
+export default function Header() { 
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchChange = (e) => {
@@ -17,16 +18,18 @@ export default function Header({ setSidebarOpen }) {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 fixed top-0 left-0 w-full z-50 lg:w-[calc(100%-16rem)] lg:left-64">
+    // Lebar dan posisi header disesuaikan agar selalu di kanan sidebar
+    <header className="h-16 bg-white border-b border-gray-200 fixed top-0 left-64 w-[calc(100%-16rem)] z-50"> 
       <div className="max-w-screen-xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-full">
         
-        {/* ✅ Tombol Menu untuk Mobile */}
-        <button className="lg:hidden text-gray-600 hover:text-gray-800" onClick={() => setSidebarOpen(true)}>
+        {/* ✅ Tombol Menu untuk Mobile Dihilangkan */}
+        {/* <button className="lg:hidden text-gray-600 hover:text-gray-800" onClick={() => setSidebarOpen(true)}>
           <Bars3Icon className="w-6 h-6" />
-        </button>
+        </button> 
+        */}
 
-        {/* ✅ Pencarian (Hanya Tampil di Desktop) */}
-        <div className="relative flex-1 max-w-md hidden sm:block">
+        {/* ✅ Pencarian (Selalu Tampil) */}
+        <div className="relative flex-1 max-w-md"> {/* sm:block dihilangkan */}
           <div className="relative">
             <input
               type="text"
@@ -35,7 +38,6 @@ export default function Header({ setSidebarOpen }) {
               placeholder="Search..."
               className="w-full bg-gray-100 border border-gray-300 rounded-md py-2 pl-10 pr-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {/* Ikon lebih presisi di tengah input */}
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           </div>
         </div>
