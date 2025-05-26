@@ -141,7 +141,6 @@ function TrackingPage() {
     setStatusFilter(e.target.value);
   };
   
-  // Filter data berdasarkan pencarian, tipe, dan status
   const filteredData = trackingData.filter((item) => {
     const matchesSearch = 
       item.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -159,6 +158,7 @@ function TrackingPage() {
     return matchesSearch && matchesType && matchesStatus;
   });
 
+  // Fungsi getStatusColor tidak perlu diubah untuk permintaan ini
   const getStatusColor = (status) => {
     switch(status.toLowerCase()) {
       case 'terkirim':
@@ -211,13 +211,13 @@ function TrackingPage() {
             <input
               type="text"
               placeholder="Cari berdasarkan ID, judul, atau deskripsi..."
-              className="w-full lg:w-1/2 p-2 border rounded"
+              className="w-full lg:w-1/2 p-2 border rounded bg-white" // Tambahkan bg-white jika diinginkan juga untuk input
               value={search}
               onChange={handleSearchChange}
             />
             
             <select 
-              className="w-full lg:w-1/4 p-2 border rounded"
+              className="w-full lg:w-1/4 p-2 border rounded bg-white" // Tambahkan bg-white jika diinginkan juga untuk select
               value={typeFilter}
               onChange={handleTypeFilterChange}
             >
@@ -226,7 +226,7 @@ function TrackingPage() {
             </select>
             
             <select 
-              className="w-full lg:w-1/4 p-2 border rounded"
+              className="w-full lg:w-1/4 p-2 border rounded bg-white" // Tambahkan bg-white jika diinginkan juga untuk select
               value={statusFilter}
               onChange={handleStatusFilterChange}
             >
@@ -246,7 +246,9 @@ function TrackingPage() {
                 filteredData.map((item) => (
                   <div 
                     key={item.id} 
-                    className={`border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
+                    // Ditambahkan bg-white sebagai dasar. hover:bg-gray-50 akan tetap berfungsi untuk item yang tidak dipilih.
+                    // bg-blue-50 akan menggantikan bg-white saat item dipilih.
+                    className={`border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer bg-white ${ 
                       selectedItem?.id === item.id ? 'border-blue-500 bg-blue-50' : 'hover:bg-gray-50'
                     }`}
                     onClick={() => setSelectedItem(item)}
@@ -279,14 +281,15 @@ function TrackingPage() {
                   </div>
                 ))
               ) : (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-gray-500 bg-white rounded-lg border shadow-sm"> {/* Opsi: beri background putih juga */}
                   Tidak ada data yang ditemukan
                 </div>
               )}
             </div>
             
             {/* Detail Panel */}
-            <div className="border rounded-lg p-4 shadow-sm">
+            {/* Ditambahkan bg-white pada panel detail */}
+            <div className="border rounded-lg p-4 shadow-sm bg-white"> 
               {selectedItem ? (
                 <div>
                   <h3 className="text-lg font-medium mb-4">Detail Tracking: {selectedItem.title}</h3>
@@ -349,13 +352,13 @@ function TrackingPage() {
       
       {/* New Tracking Item Tab Content */}
       {activeTab === 'new' && (
-        <div className="bg-white p-6 rounded border shadow-sm">
+        <div className="bg-white p-6 rounded border shadow-sm"> {/* Sudah bg-white */}
           <h2 className="text-lg font-medium mb-4">Tambah Item Tracking Baru</h2>
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Tipe Item</label>
-                <select className="w-full p-2 border rounded">
+                <select className="w-full p-2 border rounded bg-white"> {/* Tambahkan bg-white jika perlu */}
                   <option value="">Pilih Tipe</option>
                   <option value="pengiriman">Pengiriman</option>
                   <option value="proyek">Proyek</option>
@@ -368,7 +371,7 @@ function TrackingPage() {
                 <input
                   type="text"
                   placeholder="Masukkan judul item"
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded bg-white" // Tambahkan bg-white jika perlu
                 />
               </div>
             </div>
@@ -377,7 +380,7 @@ function TrackingPage() {
               <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
               <textarea
                 placeholder="Jelaskan detail item yang akan di-tracking"
-                className="w-full p-2 border rounded h-24"
+                className="w-full p-2 border rounded h-24 bg-white" // Tambahkan bg-white jika perlu
               ></textarea>
             </div>
             
@@ -386,19 +389,19 @@ function TrackingPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Mulai</label>
                 <input
                   type="date"
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded bg-white" // Tambahkan bg-white jika perlu
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Target</label>
                 <input
                   type="date"
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded bg-white" // Tambahkan bg-white jika perlu
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Prioritas</label>
-                <select className="w-full p-2 border rounded">
+                <select className="w-full p-2 border rounded bg-white"> {/* Tambahkan bg-white jika perlu */}
                   <option value="">Pilih Prioritas</option>
                   <option value="rendah">Rendah</option>
                   <option value="sedang">Sedang</option>
@@ -411,7 +414,7 @@ function TrackingPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Lokasi Asal</label>
-                <select className="w-full p-2 border rounded">
+                <select className="w-full p-2 border rounded bg-white"> {/* Tambahkan bg-white jika perlu */}
                   <option value="">Pilih lokasi asal</option>
                   <option value="head-office">Head Office</option>
                   <option value="warehouse">Warehouse</option>
@@ -420,7 +423,7 @@ function TrackingPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Lokasi Tujuan</label>
-                <select className="w-full p-2 border rounded">
+                <select className="w-full p-2 border rounded bg-white"> {/* Tambahkan bg-white jika perlu */}
                   <option value="">Pilih lokasi tujuan</option>
                   <option value="head-office">Head Office</option>
                   <option value="warehouse">Warehouse</option>
@@ -434,7 +437,7 @@ function TrackingPage() {
               <input
                 type="text"
                 placeholder="Nama penanggung jawab"
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded bg-white" // Tambahkan bg-white jika perlu
               />
             </div>
             
@@ -452,23 +455,23 @@ function TrackingPage() {
         <div className="space-y-6">
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white p-4 rounded border shadow-sm">
+            <div className="bg-white p-4 rounded border shadow-sm"> {/* Sudah bg-white */}
               <h3 className="text-sm font-medium text-gray-500">Total Item</h3>
               <p className="text-2xl font-bold text-blue-600">{trackingData.length}</p>
             </div>
-            <div className="bg-white p-4 rounded border shadow-sm">
+            <div className="bg-white p-4 rounded border shadow-sm"> {/* Sudah bg-white */}
               <h3 className="text-sm font-medium text-gray-500">Sedang Dalam Perjalanan</h3>
               <p className="text-2xl font-bold text-yellow-600">
                 {trackingData.filter(item => !['terkirim', 'di lokasi'].includes(item.status.toLowerCase())).length}
               </p>
             </div>
-            <div className="bg-white p-4 rounded border shadow-sm">
+            <div className="bg-white p-4 rounded border shadow-sm"> {/* Sudah bg-white */}
               <h3 className="text-sm font-medium text-gray-500">Sudah Sampai</h3>
               <p className="text-2xl font-bold text-green-600">
                 {trackingData.filter(item => ['terkirim', 'di lokasi'].includes(item.status.toLowerCase())).length}
               </p>
             </div>
-            <div className="bg-white p-4 rounded border shadow-sm">
+            <div className="bg-white p-4 rounded border shadow-sm"> {/* Sudah bg-white */}
               <h3 className="text-sm font-medium text-gray-500">Rata-rata Progress</h3>
               <p className="text-2xl font-bold text-purple-600">
                 {Math.round(trackingData.reduce((sum, item) => sum + item.progress, 0) / trackingData.length)}%
@@ -478,7 +481,7 @@ function TrackingPage() {
           
           {/* Charts/Tables */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded border shadow-sm">
+            <div className="bg-white p-6 rounded border shadow-sm"> {/* Sudah bg-white */}
               <h3 className="text-lg font-medium mb-4">Distribusi Status Barang</h3>
               <div className="space-y-2">
                 {['Dalam Perjalanan', 'Di Lokasi', 'Menunggu Pengiriman', 'Terkirim', 'Menunggu Persetujuan'].map(status => {
@@ -502,7 +505,7 @@ function TrackingPage() {
               </div>
             </div>
             
-            <div className="bg-white p-6 rounded border shadow-sm">
+            <div className="bg-white p-6 rounded border shadow-sm"> {/* Sudah bg-white */}
               <h3 className="text-lg font-medium mb-4">Distribusi Lokasi</h3>
               <div className="space-y-2">
                 {['Head Office', 'Warehouse', 'Studio Live'].map(location => {
