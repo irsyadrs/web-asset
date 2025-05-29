@@ -130,7 +130,7 @@ function MaintenanceTable() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Manajemen Pemeliharaan & Perbaikan</h1>
+      <h1 className="text-xl font-bold text-gray-700 mb-2">Maintenance & Repairs</h1>
       
       {/* Custom Tabs */}
       <div className="mb-4">

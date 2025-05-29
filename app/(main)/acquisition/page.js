@@ -35,7 +35,7 @@ function AcquisitionTable() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Manajemen Pengadaan Aset</h1>
+      <h1 className="text-xl font-bold text-gray-700 mb-2">Acquisition</h1>
       
       {/* Custom Tabs */}
       <div className="mb-4">

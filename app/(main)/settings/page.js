@@ -101,7 +101,7 @@ function SettingsPage() {
     <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
       <div className="p-6">
         <div className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-          <h1 className="text-2xl font-bold mb-6">Pengaturan Sistem</h1>
+         <h1 className="text-xl font-bold text-gray-700 mb-2">System Settings</h1>
           
           {/* Tabs Navigation */}
           <div className="mb-6">
