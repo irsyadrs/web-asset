@@ -178,7 +178,7 @@ function TrackingPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Sistem Tracking</h1>
+      <h1 className="text-xl font-bold text-gray-700 mb-2">Tracking</h1>
       
       {/* Custom Tabs */}
       <div className="mb-4">
