@@ -41,7 +41,7 @@ export default function NewMaintenanceForm() {
                 </div>
             </div>
             <div className="pt-4">
-                <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+                <button className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
                     Kirim Laporan Pemeliharaan
                 </button>
             </div>
