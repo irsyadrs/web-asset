@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import SettingsTabs from "@/components/setting-components/SettingsTabs";
 import GeneralSettings from "@/components/setting-components/GeneralSettings";
-import AssetSettings from "@/components/setting-components/AssetSettings";
 import NotificationSettings from "@/components/setting-components/NotificationSettings";
 import SecuritySettings from "@/components/setting-components/SecuritySettings";
 import BackupSettings from "@/components/setting-components/BackupSettings";
@@ -20,17 +19,7 @@ function SettingsPage() {
       language: "id",
       fiscalYearStart: "01-01",
     },
-    assets: {
-      autoGenerateId: true,
-      idPrefix: "AST",
-      depreciation: {
-        method: "straight-line",
-        defaultYears: 5,
-      },
-      lowStockThreshold: 5,
-      maintenanceAlert: 30,
-      warrantyAlert: 90,
-    },
+
     notifications: {
       emailNotifications: true,
       maintenanceReminders: true,
@@ -56,14 +45,6 @@ function SettingsPage() {
 
   const [saveStatus, setSaveStatus] = useState("");
 
-  // Apply dark mode
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
 
   const handleSave = () => {
     setSaveStatus("saving");
@@ -99,7 +80,6 @@ function SettingsPage() {
 
   const tabs = [
     { id: "general", label: "Umum", icon: "⚙️" },
-    { id: "assets", label: "Asset", icon: "📦" },
     { id: "notifications", label: "Notifikasi", icon: "🔔" },
     { id: "security", label: "Keamanan", icon: "🔒" },
     { id: "backup", label: "Backup", icon: "💾" },
@@ -108,17 +88,13 @@ function SettingsPage() {
   const renderActiveTabContent = () => {
     switch (activeTab) {
       case "general":
-        return <GeneralSettings settings={settings.general} onSettingChange={handleSettingChange} isDarkMode={isDarkMode} />;
-      case "assets":
-        return <AssetSettings settings={settings.assets} onSettingChange={handleSettingChange} onNestedChange={handleNestedSettingChange} isDarkMode={isDarkMode} />;
+        return <GeneralSettings settings={settings.general} onSettingChange={handleSettingChange} />;
       case "notifications":
-        return <NotificationSettings settings={settings.notifications} onSettingChange={handleSettingChange} isDarkMode={isDarkMode} />;
+        return <NotificationSettings settings={settings.notifications} onSettingChange={handleSettingChange}/>;
       case "security":
-        return <SecuritySettings settings={settings.security} onSettingChange={handleSettingChange} isDarkMode={isDarkMode} />;
+        return <SecuritySettings settings={settings.security} onSettingChange={handleSettingChange} />;
       case "backup":
-        return <BackupSettings settings={settings.backup} onSettingChange={handleSettingChange} isDarkMode={isDarkMode} />;
-      case "appearance":
-        return null;
+        return <BackupSettings settings={settings.backup} onSettingChange={handleSettingChange}/>;
     }
   };
 
