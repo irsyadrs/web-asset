@@ -1,372 +1,97 @@
-// components/maintenance-components/maintenance-table.js
+// app/(main)/maintenance/page.js
 "use client";
-import { useState } from "react";
-import AddScheduleModal from "@/components/maintenance-components/add-scedule"; // Pastikan nama file 'add-scedule.js' sudah benar, mungkin maksudnya 'add-schedule.js'?
 
-// Import ikon yang akan digunakan
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useState, useMemo, useEffect } from "react";
+import MaintenanceListView from "@/components/maintenance-components/MaintenanceListView";
+import MaintenanceScheduleView from "@/components/maintenance-components/MaintenanceScheduleView";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import Modal from "@/components/modal";
+import NewMaintenanceForm from "@/components/maintenance-components/NewMaintenanceForm";
 
-// Dummy data for maintenance and repair entries
-const dummyData = [
-  {
-    id: "MNT-001",
-    asset: "Laptop Dell XPS 13",
-    assetId: "AST-056",
-    issue: "Keyboard tidak berfungsi",
-    reportDate: "2025-05-02",
-    status: "Dalam Proses",
-    assignedTo: "Budi Santoso"
-  },
-  {
-    id: "MNT-002",
-    asset: "Printer Epson L3110",
-    assetId: "AST-078",
-    issue: "Hasil cetakan buram",
-    reportDate: "2025-05-09",
-    status: "Selesai",
-    assignedTo: "Siti Rahayu"
-  },
-  {
-    id: "MNT-003",
-    asset: "AC Panasonic 1.5PK",
-    assetId: "AST-045",
-    issue: "Tidak dingin",
-    reportDate: "2025-05-12",
-    status: "Menunggu Persetujuan",
-    assignedTo: "Belum ditugaskan"
-  },
-  {
-    id: "MNT-004",
-    asset: "Kursi Kantor",
-    assetId: "AST-120",
-    issue: "Roda patah",
-    reportDate: "2025-05-10",
-    status: "Jadwal Perbaikan",
-    assignedTo: "Agus Wijaya"
-  }
+// Data dummy
+const initialMaintenanceData = [
+    { id: "MNT-001", asset: "Laptop Dell XPS 13", assetId: "AST-056", issue: "Keyboard tidak berfungsi", reportDate: "2025-05-02", status: "Dalam Proses", assignedTo: "Budi Santoso" },
+    { id: "MNT-002", asset: "Printer Epson L3110", assetId: "AST-078", issue: "Hasil cetakan buram", reportDate: "2025-05-09", status: "Selesai", assignedTo: "Siti Rahayu" },
+    { id: "MNT-003", asset: "AC Panasonic 1.5PK", assetId: "AST-045", issue: "Tidak dingin", reportDate: "2025-05-12", status: "Menunggu Persetujuan", assignedTo: "Belum ditugaskan" },
+    { id: "MNT-004", asset: "Kursi Kantor", assetId: "AST-120", issue: "Roda patah", reportDate: "2025-05-10", status: "Jadwal Perbaikan", assignedTo: "Agus Wijaya" },
+    { id: "MNT-005", asset: "Proyektor InFocus", assetId: "AST-021", issue: "Lampu redup", reportDate: "2025-06-01", status: "Dalam Proses", assignedTo: "Budi Santoso" },
+    { id: "MNT-006", asset: "Mesin Fotokopi Canon", assetId: "AST-033", issue: "Kertas sering macet", reportDate: "2025-06-03", status: "Selesai", assignedTo: "Siti Rahayu" },
 ];
 
-// Dummy data for schedule (can be managed with state and updated)
-let dummyScheduleData = [
-  {
-    id: "SCH-001",
-    asset: "AC Kantor Lantai 2",
-    maintenanceType: "Pembersihan Filter",
-    frequency: "Bulanan",
-    nextDate: "2025-05-20",
-    pic: "Rudi Hartono"
-  },
-  {
-    id: "SCH-002",
-    asset: "Server Room",
-    maintenanceType: "Pemeliharaan UPS",
-    frequency: "3 Bulan",
-    nextDate: "2025-07-15",
-    pic: "Tim IT"
-  },
-  // ... more initial schedule data
+const initialScheduleData = [
+    { id: "SCH-001", asset: "AC Kantor Lantai 2", maintenanceType: "Pembersihan Filter", frequency: "Bulanan", nextDate: "2025-06-20", pic: "Rudi Hartono" },
+    { id: "SCH-002", asset: "Server Room", maintenanceType: "Pemeliharaan UPS", frequency: "3 Bulan", nextDate: "2025-07-15", pic: "Tim IT" },
 ];
 
+export default function MaintenancePage() {
+    // State yang diangkat kembali ke parent
+    const [maintenanceData, setMaintenanceData] = useState(initialMaintenanceData);
+    const [isNewRequestModalOpen, setIsNewRequestModalOpen] = useState(false);
 
-function MaintenanceTable() {
-  const [search, setSearch] = useState("");
-  const [activeTab, setActiveTab] = useState("list");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [isAddScheduleModalOpen, setIsAddScheduleModalOpen] = useState(false);
-  const [scheduleData, setScheduleData] = useState(dummyScheduleData);
+    // State untuk view switcher
+    const [activeView, setActiveView] = useState("list");
 
+    // Handler untuk Laporan Baru (sekarang ada di sini)
+    const handleNewRequestSubmit = (newRequest) => {
+        const newData = {
+            id: `MNT-00${maintenanceData.length + 1}`,
+            asset: "Aset Baru (di-fetch dari ID)",
+            status: "Menunggu Persetujuan",
+            assignedTo: "Belum ditugaskan",
+            ...newRequest,
+        };
+        setMaintenanceData(prev => [newData, ...prev]);
+        setIsNewRequestModalOpen(false);
+    };
 
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-  
-  const handleStatusFilterChange = (e) => {
-    setStatusFilter(e.target.value);
-  };
-  
-  const filteredData = dummyData.filter((item) => {
-    const matchesSearch = 
-      item.asset.toLowerCase().includes(search.toLowerCase()) ||
-      item.issue.toLowerCase().includes(search.toLowerCase()) ||
-      item.assetId.toLowerCase().includes(search.toLowerCase());
-    
-    const matchesStatus = 
-      statusFilter === "all" || 
-      item.status.toLowerCase() === statusFilter.toLowerCase();
-    
-    return matchesSearch && matchesStatus;
-  });
+    const activeBtnStyle = "bg-blue-100 text-blue-700 font-semibold px-4 py-2 rounded-md";
+    const inactiveBtnStyle = "bg-transparent text-gray-600 font-medium px-4 py-2 rounded-md hover:bg-gray-100";
 
-  const handleOpenAddScheduleModal = () => {
-    setIsAddScheduleModalOpen(true);
-  };
-
-  const handleCloseAddScheduleModal = () => {
-    setIsAddScheduleModalOpen(false);
-  };
-
-  const handleSaveSchedule = (newSchedule) => {
-    console.log("Saving new schedule:", newSchedule);
-    setScheduleData(prevSchedules => [
-        ...prevSchedules, 
-        {id: `SCH-00${prevSchedules.length + 3}`, ...newSchedule} 
-    ]);
-    setIsAddScheduleModalOpen(false); 
-  };
-
-  // Placeholder untuk fungsi edit dan hapus dari daftar pemeliharaan
-  const handleEditMaintenanceEntry = (entryId) => {
-    console.log("Edit maintenance entry:", entryId);
-    // Logika untuk membuka modal edit atau navigasi ke halaman edit
-  };
-
-  const handleDeleteMaintenanceEntry = (entryId) => {
-    console.log("Delete maintenance entry:", entryId);
-    // Logika untuk menghapus entri (misalnya, dengan konfirmasi)
-    // setFilteredData(prevData => prevData.filter(item => item.id !== entryId)); // Contoh jika 'dummyData' adalah state
-    alert(`Fungsi hapus untuk ${entryId} belum diimplementasikan sepenuhnya.`);
-  };
-
-
-  return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold text-gray-700 mb-2">Maintenance & Repairs</h1>
-      
-      {/* Custom Tabs */}
-      <div className="mb-4">
-        <div className="flex border-b">
-          <button 
-            className={`px-4 py-2 ${activeTab === 'list' ? 'border-b-2 border-blue-500 font-medium' : ''}`}
-            onClick={() => setActiveTab('list')}
-          >
-            Daftar Pemeliharaan
-          </button>
-          <button 
-            className={`px-4 py-2 ${activeTab === 'new' ? 'border-b-2 border-blue-500 font-medium' : ''}`}
-            onClick={() => setActiveTab('new')}
-          >
-            Tambah Pemeliharaan
-          </button>
-          <button 
-            className={`px-4 py-2 ${activeTab === 'schedule' ? 'border-b-2 border-blue-500 font-medium' : ''}`}
-            onClick={() => setActiveTab('schedule')}
-          >
-            Jadwal Pemeliharaan
-          </button>
-        </div>
-      </div>
-      
-      {/* List Tab Content */}
-      {activeTab === 'list' && (
-        <div>
-          <div className="flex flex-col md:flex-row gap-4 mb-4">
-            <input
-              type="text"
-              placeholder="Cari berdasarkan nama aset, ID, atau masalah..."
-              className="w-full md:w-2/3 p-2 border rounded"
-              value={search}
-              onChange={handleSearchChange}
-            />
-            
-            <select 
-              className="w-full md:w-1/3 p-2 border rounded"
-              value={statusFilter}
-              onChange={handleStatusFilterChange}
-            >
-              <option value="all">Semua Status</option>
-              <option value="dalam proses">Dalam Proses</option>
-              <option value="selesai">Selesai</option>
-              <option value="menunggu persetujuan">Menunggu Persetujuan</option>
-              <option value="jadwal perbaikan">Jadwal Perbaikan</option>
-            </select>
-          </div>
-          
-          <div className="border rounded overflow-x-auto shadow-sm">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aset</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Aset</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Masalah</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Laporan</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ditugaskan Kepada</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredData.length > 0 ? (
-                  filteredData.map((entry) => (
-                    <tr key={entry.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{entry.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{entry.asset}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{entry.assetId}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{entry.issue}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{entry.reportDate}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                          ${entry.status === 'Selesai' ? 'bg-green-100 text-green-800' : ''}
-                          ${entry.status === 'Dalam Proses' ? 'bg-blue-100 text-blue-800' : ''}
-                          ${entry.status === 'Menunggu Persetujuan' ? 'bg-yellow-100 text-yellow-800' : ''}
-                          ${entry.status === 'Jadwal Perbaikan' ? 'bg-purple-100 text-purple-800' : ''}
-                        `}>
-                          {entry.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{entry.assignedTo}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        {/* MODIFIKASI BAGIAN AKSI DI SINI */}
-                        <div className="flex items-center space-x-3">
-                          <button 
-                            onClick={() => handleEditMaintenanceEntry(entry.id)}
-                            className="text-blue-600 hover:text-blue-800 transition-colors duration-150"
-                            title="Edit"
-                          >
-                            <PencilSquareIcon className="w-5 h-5" />
-                          </button>
-                          <button 
-                            onClick={() => handleDeleteMaintenanceEntry(entry.id)}
-                            className="text-red-600 hover:text-red-800 transition-colors duration-150"
-                            title="Hapus"
-                          >
-                            <TrashIcon className="w-5 h-5" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={8} className="px-6 py-4 text-center text-sm text-gray-500">
-                      Tidak ada data yang ditemukan
-                    </td>
-                  </tr>
+    return (
+        <main className="p-6">
+            {/* HEADER UTAMA: Judul di kiri, tombol aksi di kanan */}
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-xl font-bold text-gray-700 mb-2">Maintenance & Repairs</h1>
+                {/* Tombol hanya muncul jika view 'Daftar Laporan' aktif */}
+                {activeView === 'list' && (
+                    <button
+                        onClick={() => setIsNewRequestModalOpen(true)}
+                        className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition-colors"
+                    >
+                        <PlusIcon className="w-5 h-5" />
+                        Lapor Kerusakan
+                    </button>
                 )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-      
-      {/* New Maintenance Request Tab Content */}
-      {activeTab === 'new' && (
-        <div className="bg-white p-6 rounded border shadow-sm">
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">ID Aset</label>
-                <input
-                  type="text"
-                  placeholder="Masukkan ID Aset"
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nama Aset</label>
-                <input
-                  type="text"
-                  placeholder="Nama Aset"
-                  className="w-full p-2 border rounded"
-                  disabled // Contoh, mungkin akan di-fetch otomatis
-                />
-              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi Masalah</label>
-              <textarea
-                placeholder="Jelaskan masalah dengan detail"
-                className="w-full p-2 border rounded h-24"
-              ></textarea>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Prioritas</label>
-                <select className="w-full p-2 border rounded">
-                  <option value="">Pilih Prioritas</option>
-                  <option value="low">Rendah</option>
-                  <option value="medium">Sedang</option>
-                  <option value="high">Tinggi</option>
-                  <option value="urgent">Mendesak</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Laporan</label>
-                <input
-                  type="date"
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Lampirkan Foto (opsional)</label>
-              <input
-                type="file"
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <div className="pt-4">
-              <button className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-                Kirim Laporan Pemeliharaan
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {/* Schedule Tab Content */}
-      {activeTab === 'schedule' && (
-        <div className="bg-white p-6 rounded border shadow-sm">
-          <h2 className="text-lg font-medium mb-4">Jadwal Pemeliharaan Rutin</h2>
-          <div className="border rounded overflow-x-auto mb-6">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aset</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipe Pemeliharaan</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Frekuensi</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Berikutnya</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PIC</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {scheduleData.map((schedule) => (
-                   <tr key={schedule.id}>
-                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{schedule.asset}</td>
-                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{schedule.maintenanceType}</td>
-                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{schedule.frequency}</td>
-                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{schedule.nextDate}</td>
-                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{schedule.pic}</td>
-                   </tr>
-                ))}
-                {scheduleData.length === 0 && (
-                    <tr>
-                        <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
-                            Belum ada jadwal pemeliharaan.
-                        </td>
-                    </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex justify-end">
-            <button 
-              onClick={handleOpenAddScheduleModal} 
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-              Tambah Jadwal Baru
-            </button>
-          </div>
-        </div>
-      )}
 
-      <AddScheduleModal 
-        isOpen={isAddScheduleModalOpen}
-        onClose={handleCloseAddScheduleModal}
-        onSubmit={handleSaveSchedule}
-      />
-    </div>
-  );
+            <div className="flex items-center gap-2 mb-5 border-b pb-2">
+                <button className={activeView === 'list' ? activeBtnStyle : inactiveBtnStyle} onClick={() => setActiveView('list')}>
+                    Daftar Laporan
+                </button>
+                <button className={activeView === 'schedule' ? activeBtnStyle : inactiveBtnStyle} onClick={() => setActiveView('schedule')}>
+                    Jadwal Rutin
+                </button>
+            </div>
+
+            {/* Merender komponen yang sesuai berdasarkan view aktif */}
+            <div>
+                {activeView === 'list' && (
+                    <MaintenanceListView
+                        // Kirim data dan state setter sebagai props
+                        maintenanceData={maintenanceData}
+                        setMaintenanceData={setMaintenanceData}
+                    />
+                )}
+                {activeView === 'schedule' && <MaintenanceScheduleView initialData={initialScheduleData} />}
+            </div>
+
+            {/* Modal untuk Lapor Kerusakan sekarang dikontrol dari sini */}
+            <Modal isOpen={isNewRequestModalOpen} onClose={() => setIsNewRequestModalOpen(false)} title="Buat Laporan Pemeliharaan Baru">
+                <NewMaintenanceForm
+                    onSubmitForm={handleNewRequestSubmit}
+                    onCancel={() => setIsNewRequestModalOpen(false)}
+                />
+            </Modal>
+        </main>
+    );
 }
-
-export default MaintenanceTable;

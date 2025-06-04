@@ -1,9 +1,16 @@
-// components/acquisition-components/acquisition-table.js
-"use client";
-import { useState } from "react";
+// app/(main)/acquisition/page.js
 
-// Dummy data for acquisition entries
-const dummyData = [
+// 1. Menjadikan file ini sebagai Client Component
+"use client"; 
+
+// 2. Impor hooks dari React dan komponen-komponen anak
+import { useState, useMemo } from "react";
+import AddAcquisition from "@/components/acquisition-components/add-acquisition";
+import AcquisitionTable from "@/components/acquisition-components/acquisition-table";
+import Pagination from "@/components/pagination"; // Asumsi Anda punya komponen ini seperti di halaman Kategori
+
+// Data dummy sekarang menjadi state awal
+const initialData = [
   {
     id: "ACQ-001",
     item: "Laptop Dell XPS 13",
@@ -18,133 +25,75 @@ const dummyData = [
     date: "2024-05-10",
     status: "Menunggu Persetujuan",
   },
+  {
+    id: "ACQ-003",
+    item: "Monitor LG 24 inch",
+    vendor: "CV Media Solusi",
+    date: "2024-06-01",
+    status: "Menunggu Persetujuan",
+  },
+  // Tambahkan lebih banyak data untuk menguji paginasi
+  { id: "ACQ-004", item: "Keyboard Mechanical", vendor: "PT Techno", date: "2024-06-02", status: "Disetujui" },
+  { id: "ACQ-005", item: "Mouse Logitech", vendor: "CV PrintPlus", date: "2024-06-03", status: "Ditolak" },
+  { id: "ACQ-006", item: "Webcam HD", vendor: "CV Media Solusi", date: "2024-06-04", status: "Menunggu Persetujuan" },
 ];
 
-function AcquisitionTable() {
+export default function AcquisitionsPage() {
+  // 3. Semua state sekarang dikelola di sini, seperti di halaman Kategori
+  const [acquisitions, setAcquisitions] = useState(initialData);
   const [search, setSearch] = useState("");
-  const [activeTab, setActiveTab] = useState("list");
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Tentukan jumlah item per halaman
+
+  // Handler untuk menambah data baru
+  const handleAddNewAcquisition = (newAcquisition) => {
+    setAcquisitions((prev) => [newAcquisition, ...prev]);
+  };
+
+  // Handler untuk input pencarian
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
+    setCurrentPage(1); // Kembali ke halaman pertama setiap kali melakukan pencarian
   };
-  
-  const filteredData = dummyData.filter((item) =>
-    item.item.toLowerCase().includes(search.toLowerCase()) ||
-    item.vendor.toLowerCase().includes(search.toLowerCase())
-  );
+
+  // 4. Logika untuk memfilter dan paginasi data
+  const filteredData = useMemo(() => {
+    if (!search) {
+      return acquisitions;
+    }
+    return acquisitions.filter(
+      (item) =>
+        item.item.toLowerCase().includes(search.toLowerCase()) ||
+        item.vendor.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [acquisitions, search]);
+
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredData.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredData, currentPage, itemsPerPage]);
+
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold text-gray-700 mb-2">Acquisition</h1>
-      
-      {/* Custom Tabs */}
-      <div className="mb-4">
-        <div className="flex border-b">
-          <button 
-            className={`px-4 py-2 ${activeTab === 'list' ? 'border-b-2 border-blue-500 font-medium' : ''}`}
-            onClick={() => setActiveTab('list')}
-          >
-            Daftar Pengadaan
-          </button>
-          <button 
-            className={`px-4 py-2 ${activeTab === 'new' ? 'border-b-2 border-blue-500 font-medium' : ''}`}
-            onClick={() => setActiveTab('new')}
-          >
-            Tambah Pengadaan
-          </button>
-        </div>
+    // 5. JSX sekarang merender komponen anak dan memberikan props yang diperlukan
+    <main className="p-6">
+      <div className="flex justify-between items-center mb-4">
+       <h1 className="text-xl font-bold text-gray-700 mb-2">Acquisitions</h1>
+        <AddAcquisition onAdd={handleAddNewAcquisition} />
       </div>
+
+      <AcquisitionTable
+        data={paginatedData}
+        searchValue={search}
+        onSearchChange={handleSearchChange}
+      />
       
-      {/* List Tab Content */}
-      {activeTab === 'list' && (
-        <div>
-          <input
-            type="text"
-            placeholder="Cari berdasarkan nama aset atau vendor..."
-            className="w-full p-2 mb-4 border rounded"
-            value={search}
-            onChange={handleSearchChange}
-          />
-          
-          <div className="border rounded overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Aset</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredData.length > 0 ? (
-                  filteredData.map((entry) => (
-                    <tr key={entry.id}>
-                      <td className="px-6 py-4 whitespace-nowrap">{entry.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">{entry.item}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">{entry.vendor}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">{entry.date}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">{entry.status}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={5} className="px-6 py-4 text-center">
-                      Tidak ada data yang ditemukan
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-      
-      {/* New Acquisition Tab Content */}
-      {activeTab === 'new' && (
-        <div className="bg-white p-6 rounded border">
-          <div className="space-y-4">
-            <div>
-              <input
-                type="text"
-                placeholder="Nama Aset"
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <div>
-              <input
-                type="number"
-                placeholder="Jumlah"
-                min="1"
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                placeholder="Vendor"
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <div>
-              <input
-                type="date"
-                placeholder="Tanggal Pengadaan"
-                className="w-full p-2 border rounded"
-              />
-            </div>
-            <div>
-              <button className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-                Ajukan Pengadaan
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      <Pagination
+        totalItems={filteredData.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
+    </main>
   );
 }
-
-export default AcquisitionTable;
-
