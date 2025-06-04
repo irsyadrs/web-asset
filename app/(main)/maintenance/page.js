@@ -13,7 +13,7 @@ const initialMaintenanceData = [
     { id: "MNT-001", asset: "Laptop Dell XPS 13", assetId: "AST-056", issue: "Keyboard tidak berfungsi", reportDate: "2025-05-02", status: "Dalam Proses", assignedTo: "Budi Santoso" },
     { id: "MNT-002", asset: "Printer Epson L3110", assetId: "AST-078", issue: "Hasil cetakan buram", reportDate: "2025-05-09", status: "Selesai", assignedTo: "Siti Rahayu" },
     { id: "MNT-003", asset: "AC Panasonic 1.5PK", assetId: "AST-045", issue: "Tidak dingin", reportDate: "2025-05-12", status: "Menunggu Persetujuan", assignedTo: "Belum ditugaskan" },
-    { id: "MNT-004", asset: "Kursi Kantor", assetId: "AST-120", issue: "Roda patah", reportDate: "2025-05-10", status: "Jadwal Perbaikan", assignedTo: "Agus Wijaya" },
+    { id: "MNT-004", asset: "Kursi Kantor", assetId: "AST-120", issue: "Roda patah", reportDate: "2025-05-10", status: "Dalam Proses", assignedTo: "Agus Wijaya" },
     { id: "MNT-005", asset: "Proyektor InFocus", assetId: "AST-021", issue: "Lampu redup", reportDate: "2025-06-01", status: "Dalam Proses", assignedTo: "Budi Santoso" },
     { id: "MNT-006", asset: "Mesin Fotokopi Canon", assetId: "AST-033", issue: "Kertas sering macet", reportDate: "2025-06-03", status: "Selesai", assignedTo: "Siti Rahayu" },
 ];

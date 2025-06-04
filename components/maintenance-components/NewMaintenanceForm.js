@@ -26,13 +26,12 @@ export default function NewMaintenanceForm() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Prioritas</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                     <select className="w-full p-2 border rounded" required>
-                        <option value="">Pilih Prioritas</option>
-                        <option value="low">Rendah</option>
-                        <option value="medium">Sedang</option>
-                        <option value="high">Tinggi</option>
-                        <option value="urgent">Mendesak</option>
+                        <option value="">Pilih status</option>
+                        <option value="menunggu">Menunggu Persetujuan</option>
+                        <option value="proses">Dalam Proses</option>
+                        <option value="selesai">Selesai</option>
                     </select>
                 </div>
                 <div>

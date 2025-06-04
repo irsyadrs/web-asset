@@ -41,7 +41,6 @@ export default function MaintenanceListView({ maintenanceData, setMaintenanceDat
                     <option value="Dalam Proses">Dalam Proses</option>
                     <option value="Selesai">Selesai</option>
                     <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
-                    <option value="Jadwal Perbaikan">Jadwal Perbaikan</option>
                 </select>
             </div>
             
