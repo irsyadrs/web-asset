@@ -4,7 +4,7 @@
 export default function NewMaintenanceForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert("Form laporan pemeliharaan baru telah dikirim!");
+        // alert("Form laporan pemeliharaan baru telah dikirim!");
         // Logika untuk mengirim data form ke API
     };
 
