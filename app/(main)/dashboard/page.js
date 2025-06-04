@@ -188,7 +188,7 @@ export default function DashboardPage() {
           value={dashboardData.newAcquisitionsThisMonth}
           unit="Bulan Ini"
           icon={PlusCircleIcon}
-          href="/acquisitions"
+          href="/acquisition"
           iconColor="bg-green-500"
         />
         <DataShortcutCard 
