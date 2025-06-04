@@ -7,7 +7,6 @@ import AssetSettings from "@/components/setting-components/AssetSettings";
 import NotificationSettings from "@/components/setting-components/NotificationSettings";
 import SecuritySettings from "@/components/setting-components/SecuritySettings";
 import BackupSettings from "@/components/setting-components/BackupSettings";
-import AppearanceSettings from "@/components/setting-components/AppearanceSettings";
 
 function SettingsPage() {
   const [activeTab, setActiveTab] = useState("general");
@@ -104,7 +103,6 @@ function SettingsPage() {
     { id: "notifications", label: "Notifikasi", icon: "🔔" },
     { id: "security", label: "Keamanan", icon: "🔒" },
     { id: "backup", label: "Backup", icon: "💾" },
-    { id: "appearance", label: "Tampilan", icon: "🎨" },
   ];
 
   const renderActiveTabContent = () => {
@@ -120,8 +118,6 @@ function SettingsPage() {
       case "backup":
         return <BackupSettings settings={settings.backup} onSettingChange={handleSettingChange} isDarkMode={isDarkMode} />;
       case "appearance":
-        return <AppearanceSettings settings={settings.general} onSettingChange={handleSettingChange} isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />;
-      default:
         return null;
     }
   };
