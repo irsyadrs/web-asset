@@ -20,7 +20,7 @@ import {
 // ====================================================================
 const dashboardData = {
   totalAssets: 145,
-  assetValue: 1250000000,
+  // assetValue telah dihapus dari sini
   attentionItems: [
     { id: 1, text: "Laptop #78A9 an. Budi Susanto sudah melewati batas waktu pinjam.", type: "warning" },
     { id: 2, text: "Garansi Proyektor #PJK04 akan habis dalam 15 hari.", type: "warning" },
@@ -39,15 +39,15 @@ const dashboardData = {
 // KOMPONEN-KOMPONEN WIDGET
 // ====================================================================
 
-function TotalAssetCard({ count, value }) {
+// --- PERUBAHAN DI SINI ---
+// Komponen TotalAssetCard disederhanakan, tidak lagi menerima atau menampilkan 'value'
+function TotalAssetCard({ count }) {
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg h-full flex flex-col justify-between">
       <div>
         <p className="text-gray-500 text-lg">Total Asset</p>
         <p className="text-5xl font-bold my-2">{count}</p>
-        <p className="text-gray-700 font-semibold">
-          Estimasi Nilai: {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value)}
-        </p>
+        {/* Baris estimasi nilai telah dihapus */}
       </div>
       <a href="/inventory" className="text-blue-500 hover:text-blue-700 font-semibold mt-4 inline-flex items-center">
         Kelola lebih lanjut <ArrowRightIcon className="w-4 h-4 ml-1" />
@@ -99,7 +99,7 @@ function DataShortcutCard({ title, value, unit, icon: Icon, href, iconColor }) {
 }
 
 // ====================================================================
-// KOMPONEN BANNER DASHBOARD (KEMBALI KE TEMA PROFESIONAL)
+// KOMPONEN BANNER DASHBOARD
 // ====================================================================
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -150,21 +150,21 @@ export default function DashboardPage() {
     <main className="p-6 bg-gray-100 min-h-screen">
       <div className="mb-6">
         <DashboardBanner 
-          // --- PERUBAHAN DI SINI ---
-          // Properti untuk Tema 1: Profesional & Korporat
           backgroundImageUrl="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2070&auto=format&fit=crop"
           title="PT. SOLOMON INDO GLOBAL"
           subtitle="Asset Management Dashboard"
           greeting={getGreeting()}
           userName="Administrator"
-          overlayColor="bg-slate-800/60" // Overlay gelap untuk kesan korporat
+          overlayColor="bg-slate-800/60"
         />
       </div>
 
       {/* Baris 1: Widget Utama */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-1">
-          <TotalAssetCard count={dashboardData.totalAssets} value={dashboardData.assetValue} />
+          {/* --- PERUBAHAN DI SINI --- */}
+          {/* Properti 'value' telah dihapus dari pemanggilan komponen */}
+          <TotalAssetCard count={dashboardData.totalAssets} />
         </div>
         <div className="lg:col-span-2">
           <NeedsAttentionWidget items={dashboardData.attentionItems} />
