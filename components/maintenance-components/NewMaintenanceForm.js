@@ -17,7 +17,7 @@ export default function NewMaintenanceForm() {
                 </div>
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Nama Aset</label>
-                    <input type="text" placeholder="Nama Aset" className="w-full p-2 border rounded bg-gray-100" disabled />
+                    <input type="text" placeholder="Nama Aset" className="w-full p-2 border rounded" required />
                 </div>
             </div>
             <div>
