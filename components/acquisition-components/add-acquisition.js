@@ -38,19 +38,54 @@ export default function AddAcquisition({ onAdd }) {
       >
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div>
-            <input name="assetName" type="text" placeholder="Nama Aset" className="w-full p-2 border rounded" required />
+            <input
+              name="assetName"
+              type="text"
+              placeholder="Nama Aset"
+              className="w-full p-2 border rounded"
+              required
+            />
           </div>
           <div>
-            <input name="quantity" type="number" placeholder="Jumlah" min="1" className="w-full p-2 border rounded" required />
+            <input
+              name="quantity"
+              type="number"
+              placeholder="Jumlah"
+              min="1"
+              className="w-full p-2 border rounded"
+              required
+            />
           </div>
           <div>
-            <input name="vendor" type="text" placeholder="Vendor" className="w-full p-2 border rounded" required />
+            <input
+              name="vendor"
+              type="text"
+              placeholder="Vendor"
+              className="w-full p-2 border rounded"
+              required
+            />
           </div>
           <div>
-            <input name="date" type="date" className="w-full p-2 border rounded" required />
+            <select className="w-full p-2 border rounded" required>
+              <option value="Pilih status">Pilih status</option>
+              <option value="Menunggu">Menunggu Persetujuan</option>
+              <option value="Disetujui">Disetujui</option>
+              <option value="Ditolak">Ditolak</option>
+            </select>
           </div>
           <div>
-            <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+            <input
+              name="date"
+              type="date"
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            >
               Ajukan Pengadaan
             </button>
           </div>
