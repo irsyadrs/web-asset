@@ -1,8 +1,6 @@
-// components/acquisition-components/AddAcquisition.js
 "use client";
 
 import { useState } from "react";
-// Path import ini disesuaikan untuk mengambil modal.js dari folder components
 import Modal from "../modal";
 
 export default function AddAcquisition({ onAdd }) {

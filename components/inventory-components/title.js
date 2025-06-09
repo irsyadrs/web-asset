@@ -3,17 +3,20 @@
 import { useState } from "react";
 import { FunnelIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Modal from "../modal";
-import AddAssetForm from "./add-asset-form"; 
+import AddAssetForm from "./add-asset-form";
 import FilterModal from "./filter-asset";
 
 export default function InventoryTitle({ onFilterApply }) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState({ division: [], status: [] });
+  const [selectedFilters, setSelectedFilters] = useState({
+    division: [],
+    status: [],
+  });
 
   const handleFilterApply = (filters) => {
     setSelectedFilters(filters);
-    onFilterApply(filters); // Kirim filter ke parent (Inventory Page)
+    onFilterApply(filters);
   };
 
   return (
@@ -36,12 +39,14 @@ export default function InventoryTitle({ onFilterApply }) {
         </div>
       </div>
 
-      {/* Modal Tambah Aset */}
-      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Tambah Aset">
+      <Modal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        title="Tambah Aset"
+      >
         <AddAssetForm onClose={() => setIsAddModalOpen(false)} />
       </Modal>
 
-      {/* Modal Filter */}
       <FilterModal
         isOpen={isFilterModalOpen}
         onClose={() => setIsFilterModalOpen(false)}

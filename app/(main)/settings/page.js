@@ -45,10 +45,9 @@ function SettingsPage() {
 
   const [saveStatus, setSaveStatus] = useState("");
 
-
   const handleSave = () => {
     setSaveStatus("saving");
-    console.log("Saving settings:", settings); // You would typically send this to an API
+    console.log("Saving settings:", settings);
     setTimeout(() => {
       setSaveStatus("saved");
       setTimeout(() => setSaveStatus(""), 2000);
@@ -88,29 +87,73 @@ function SettingsPage() {
   const renderActiveTabContent = () => {
     switch (activeTab) {
       case "general":
-        return <GeneralSettings settings={settings.general} onSettingChange={handleSettingChange} />;
+        return (
+          <GeneralSettings
+            settings={settings.general}
+            onSettingChange={handleSettingChange}
+          />
+        );
       case "notifications":
-        return <NotificationSettings settings={settings.notifications} onSettingChange={handleSettingChange}/>;
+        return (
+          <NotificationSettings
+            settings={settings.notifications}
+            onSettingChange={handleSettingChange}
+          />
+        );
       case "security":
-        return <SecuritySettings settings={settings.security} onSettingChange={handleSettingChange} />;
+        return (
+          <SecuritySettings
+            settings={settings.security}
+            onSettingChange={handleSettingChange}
+          />
+        );
       case "backup":
-        return <BackupSettings settings={settings.backup} onSettingChange={handleSettingChange}/>;
+        return (
+          <BackupSettings
+            settings={settings.backup}
+            onSettingChange={handleSettingChange}
+          />
+        );
     }
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? "dark bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
+    <div
+      className={`min-h-screen transition-colors duration-300 ${
+        isDarkMode ? "dark bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
+      }`}
+    >
       <div className="p-6">
-       <h1 className="text-xl font-bold text-gray-700 mb-2">System Setting</h1>
-        
-        <SettingsTabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} isDarkMode={isDarkMode} />
+        <h1 className="text-xl font-bold text-gray-700 mb-2">System Setting</h1>
 
-        <div className={`mt-6 ${isDarkMode ? "bg-gray-800" : "bg-white"} rounded-lg shadow-sm border ${isDarkMode ? "border-gray-700" : "border-gray-200"} p-6`}>
+        <SettingsTabs
+          tabs={tabs}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          isDarkMode={isDarkMode}
+        />
+
+        <div
+          className={`mt-6 ${
+            isDarkMode ? "bg-gray-800" : "bg-white"
+          } rounded-lg shadow-sm border ${
+            isDarkMode ? "border-gray-700" : "border-gray-200"
+          } p-6`}
+        >
           {renderActiveTabContent()}
 
-          {/* Save Button */}
           <div className="flex justify-end mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <button onClick={handleSave} disabled={saveStatus === "saving"} className={`px-6 py-2 rounded-lg font-medium transition-colors ${saveStatus === "saving" ? "bg-gray-400 text-white cursor-not-allowed" : saveStatus === "saved" ? "bg-green-500 text-white" : "bg-blue-500 hover:bg-blue-600 text-white"}`}>
+            <button
+              onClick={handleSave}
+              disabled={saveStatus === "saving"}
+              className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                saveStatus === "saving"
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : saveStatus === "saved"
+                  ? "bg-green-500 text-white"
+                  : "bg-blue-500 hover:bg-blue-600 text-white"
+              }`}
+            >
               {saveStatus === "saving" && "Menyimpan..."}
               {saveStatus === "saved" && "✓ Tersimpan"}
               {!saveStatus && "Simpan Pengaturan"}

@@ -3,28 +3,40 @@
 import { useState } from "react";
 import Modal from "../modal";
 
-export default function FilterModal({ isOpen, onClose, onApply = () => {}, selectedFilters }) {
-  const [selectedDivision, setSelectedDivision] = useState(selectedFilters.division || []);
-  const [selectedStatus, setSelectedStatus] = useState(selectedFilters.status || []);
+export default function FilterModal({
+  isOpen,
+  onClose,
+  onApply = () => {},
+  selectedFilters,
+}) {
+  const [selectedDivision, setSelectedDivision] = useState(
+    selectedFilters.division || []
+  );
+  const [selectedStatus, setSelectedStatus] = useState(
+    selectedFilters.status || []
+  );
 
   const handleFilterChange = (type, value) => {
     if (type === "division") {
       setSelectedDivision((prev) =>
-        prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+        prev.includes(value)
+          ? prev.filter((item) => item !== value)
+          : [...prev, value]
       );
     } else if (type === "status") {
       setSelectedStatus((prev) =>
-        prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+        prev.includes(value)
+          ? prev.filter((item) => item !== value)
+          : [...prev, value]
       );
     }
   };
 
-  // ✅ **Perbaikan: Reset filter & langsung tutup modal**
   const handleResetFilters = () => {
     setSelectedDivision([]);
     setSelectedStatus([]);
-    onApply({ division: [], status: [] }); // Langsung reset filter
-    onClose(); // Tutup modal
+    onApply({ division: [], status: [] });
+    onClose();
   };
 
   const applyFilters = () => {
@@ -66,7 +78,6 @@ export default function FilterModal({ isOpen, onClose, onApply = () => {}, selec
         </div>
 
         <div className="flex justify-end gap-2">
-          {/* ✅ Button Reset langsung reset filter & menutup modal */}
           <button
             onClick={handleResetFilters}
             className="px-4 py-2 text-sm text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300"

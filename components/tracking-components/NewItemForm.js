@@ -1,4 +1,3 @@
-// components/tracking-components/NewItemForm.js
 "use client";
 
 export default function NewItemForm({ onSubmitForm, onCancel }) {
@@ -9,7 +8,6 @@ export default function NewItemForm({ onSubmitForm, onCancel }) {
       type: formData.get("type"),
       title: formData.get("title"),
       description: formData.get("description"),
-      // ... dan seterusnya untuk semua field
     };
     onSubmitForm(newItem);
   };
@@ -73,7 +71,6 @@ export default function NewItemForm({ onSubmitForm, onCancel }) {
           className="w-full p-2 border rounded h-24"
         ></textarea>
       </div>
-      {/* Anda bisa menambahkan input lain di sini sesuai kebutuhan */}
       <div className="pt-4 flex justify-end gap-3">
         <button
           type="button"

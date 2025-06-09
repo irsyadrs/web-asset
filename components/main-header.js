@@ -1,9 +1,7 @@
-// components/main-header.jsx (atau Header.jsx)
-
 "use client";
 
 import { useState } from "react";
-import Link from "next/link"; // <-- 1. Import Link
+import Link from "next/link"; 
 import {
   ChatBubbleOvalLeftIcon,
   BellIcon,
@@ -56,7 +54,6 @@ export default function Header({ isSidebarCollapsed, toggleSidebar }) {
             <BellIcon className="w-6 h-6" />
           </button>
           
-          {/* 2. Bungkus tombol dengan Link */}
           <Link href="/profile">
             <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 cursor-pointer">
               <UserIcon className="w-6 h-6 text-gray-500" />

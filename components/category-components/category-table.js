@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from 'react';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
-import Modal from '../modal';
+import { useState } from "react";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import Modal from "../modal";
 
 export default function CategoryTable({ data }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,23 +24,31 @@ export default function CategoryTable({ data }) {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              {['Code', 'Abbrv.', 'Title', 'Description', 'Actions'].map((col) => (
-                <th
-                  key={col}
-                  className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  {col}
-                </th>
-              ))}
+              {["Code", "Abbrv.", "Title", "Description", "Actions"].map(
+                (col) => (
+                  <th
+                    key={col}
+                    className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    {col}
+                  </th>
+                )
+              )}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {data.map((item) => (
               <tr key={item.code} className="hover:bg-gray-50">
                 <td className="px-4 py-4 text-sm text-gray-900">{item.code}</td>
-                <td className="px-4 py-4 text-sm text-gray-900">{item.abbrv}</td>
-                <td className="px-4 py-4 text-sm text-gray-900">{item.title}</td>
-                <td className="px-4 py-4 text-sm text-gray-900">{item.description}</td>
+                <td className="px-4 py-4 text-sm text-gray-900">
+                  {item.abbrv}
+                </td>
+                <td className="px-4 py-4 text-sm text-gray-900">
+                  {item.title}
+                </td>
+                <td className="px-4 py-4 text-sm text-gray-900">
+                  {item.description}
+                </td>
                 <td className="px-4 py-4 text-center text-sm font-medium">
                   <button className="mr-3 text-blue-500 hover:text-blue-700 mx-2">
                     <PencilSquareIcon className="h-5 w-5" />
@@ -58,8 +66,15 @@ export default function CategoryTable({ data }) {
         </table>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="Konfirmasi Hapus">
-        <p className="text-sm ">Apakah anda yakin ingin menghapus <strong>{selectedItem?.title}</strong>?</p>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title="Konfirmasi Hapus"
+      >
+        <p className="text-sm ">
+          Apakah anda yakin ingin menghapus{" "}
+          <strong>{selectedItem?.title}</strong>?
+        </p>
         <div className="flex justify-end mt-4">
           <button
             className="px-4 py-2 text-sm bg-gray-200 text-gray-700  hover:bg-gray-300 rounded-lg mr-2"
@@ -70,7 +85,7 @@ export default function CategoryTable({ data }) {
           <button
             className="px-4 py-2 text-sm bg-red-600 text-white hover:bg-red-700 rounded-lg"
             onClick={() => {
-              console.log('Deleting:', selectedItem);
+              console.log("Deleting:", selectedItem);
               handleCloseModal();
             }}
           >

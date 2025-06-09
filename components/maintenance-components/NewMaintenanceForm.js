@@ -1,11 +1,8 @@
-// components/maintenance-components/NewMaintenanceForm.js
 "use client";
 
 export default function NewMaintenanceForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
-    // alert("Form laporan pemeliharaan baru telah dikirim!");
-    // Logika untuk mengirim data form ke API
   };
 
   return (

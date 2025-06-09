@@ -127,7 +127,6 @@ export default function CategoriesPage() {
     setIsModalOpen(false);
   }, []);
 
-  
   useEffect(() => {
     setCurrentPage(1);
   }, [activeCategory]);
@@ -153,7 +152,6 @@ export default function CategoriesPage() {
         currentPage={currentPage}
         onPageChange={setCurrentPage}
       />
-
     </main>
   );
 }

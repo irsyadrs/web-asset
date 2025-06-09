@@ -1,4 +1,3 @@
-// /components/profile/UserProfileHeader.js
 "use client";
 
 import Image from "next/image";

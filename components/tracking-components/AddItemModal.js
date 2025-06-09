@@ -1,4 +1,3 @@
-// components/tracking-components/AddItemModal.js
 "use client";
 
 import Modal from "@/components/modal";

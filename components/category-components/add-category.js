@@ -12,7 +12,6 @@ export default function AddCategoryForm({ onClose, onAddCategory }) {
     description: "",
   });
 
-  // Auto-focus ke input pertama saat modal terbuka
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -22,7 +21,6 @@ export default function AddCategoryForm({ onClose, onAddCategory }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Validasi: Pastikan input kode hanya huruf/angka
     if (name === "code" && !/^[A-Za-z0-9]*$/.test(value)) {
       return;
     }
@@ -39,9 +37,10 @@ export default function AddCategoryForm({ onClose, onAddCategory }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-      {/* Kode Kategori */}
       <div>
-        <label className="block text-sm font-medium text-gray-700">Kode Kategori</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Kode Kategori
+        </label>
         <input
           type="text"
           name="code"
@@ -53,9 +52,10 @@ export default function AddCategoryForm({ onClose, onAddCategory }) {
         />
       </div>
 
-      {/* Abbreviasi */}
       <div>
-        <label className="block text-sm font-medium text-gray-700">Singkatan</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Singkatan
+        </label>
         <input
           type="text"
           name="abbr"
@@ -66,9 +66,10 @@ export default function AddCategoryForm({ onClose, onAddCategory }) {
         />
       </div>
 
-      {/* Nama Kategori */}
       <div>
-        <label className="block text-sm font-medium text-gray-700">Nama Kategori</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Nama Kategori
+        </label>
         <input
           type="text"
           name="title"
@@ -79,9 +80,10 @@ export default function AddCategoryForm({ onClose, onAddCategory }) {
         />
       </div>
 
-      {/* Deskripsi */}
       <div>
-        <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Deskripsi
+        </label>
         <textarea
           name="description"
           value={formData.description}
@@ -91,7 +93,6 @@ export default function AddCategoryForm({ onClose, onAddCategory }) {
         ></textarea>
       </div>
 
-      {/* Tombol Aksi */}
       <div className="flex justify-end space-x-2">
         <button
           type="button"

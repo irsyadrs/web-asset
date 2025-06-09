@@ -1,15 +1,10 @@
-// app/(main)/acquisition/page.js
+"use client";
 
-// 1. Menjadikan file ini sebagai Client Component
-"use client"; 
-
-// 2. Impor hooks dari React dan komponen-komponen anak
 import { useState, useMemo } from "react";
 import AddAcquisition from "@/components/acquisition-components/add-acquisition";
 import AcquisitionTable from "@/components/acquisition-components/acquisition-table";
-import Pagination from "@/components/pagination"; // Asumsi Anda punya komponen ini seperti di halaman Kategori
+import Pagination from "@/components/pagination";
 
-// Data dummy sekarang menjadi state awal
 const initialData = [
   {
     id: "ACQ-001",
@@ -32,31 +27,44 @@ const initialData = [
     date: "2024-06-01",
     status: "Menunggu Persetujuan",
   },
-  // Tambahkan lebih banyak data untuk menguji paginasi
-  { id: "ACQ-004", item: "Keyboard Mechanical", vendor: "PT Techno", date: "2024-06-02", status: "Disetujui" },
-  { id: "ACQ-005", item: "Mouse Logitech", vendor: "CV PrintPlus", date: "2024-06-03", status: "Ditolak" },
-  { id: "ACQ-006", item: "Webcam HD", vendor: "CV Media Solusi", date: "2024-06-04", status: "Menunggu Persetujuan" },
+  {
+    id: "ACQ-004",
+    item: "Keyboard Mechanical",
+    vendor: "PT Techno",
+    date: "2024-06-02",
+    status: "Disetujui",
+  },
+  {
+    id: "ACQ-005",
+    item: "Mouse Logitech",
+    vendor: "CV PrintPlus",
+    date: "2024-06-03",
+    status: "Ditolak",
+  },
+  {
+    id: "ACQ-006",
+    item: "Webcam HD",
+    vendor: "CV Media Solusi",
+    date: "2024-06-04",
+    status: "Menunggu Persetujuan",
+  },
 ];
 
 export default function AcquisitionsPage() {
-  // 3. Semua state sekarang dikelola di sini, seperti di halaman Kategori
   const [acquisitions, setAcquisitions] = useState(initialData);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Tentukan jumlah item per halaman
+  const itemsPerPage = 5;
 
-  // Handler untuk menambah data baru
   const handleAddNewAcquisition = (newAcquisition) => {
     setAcquisitions((prev) => [newAcquisition, ...prev]);
   };
 
-  // Handler untuk input pencarian
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setCurrentPage(1); // Kembali ke halaman pertama setiap kali melakukan pencarian
+    setCurrentPage(1);
   };
 
-  // 4. Logika untuk memfilter dan paginasi data
   const filteredData = useMemo(() => {
     if (!search) {
       return acquisitions;
@@ -73,12 +81,10 @@ export default function AcquisitionsPage() {
     return filteredData.slice(startIndex, startIndex + itemsPerPage);
   }, [filteredData, currentPage, itemsPerPage]);
 
-
   return (
-    // 5. JSX sekarang merender komponen anak dan memberikan props yang diperlukan
     <main className="p-6">
       <div className="flex justify-between items-center mb-4">
-       <h1 className="text-xl font-bold text-gray-700 mb-2">Acquisitions</h1>
+        <h1 className="text-xl font-bold text-gray-700 mb-2">Acquisitions</h1>
         <AddAcquisition onAdd={handleAddNewAcquisition} />
       </div>
 
@@ -87,7 +93,7 @@ export default function AcquisitionsPage() {
         searchValue={search}
         onSearchChange={handleSearchChange}
       />
-      
+
       <Pagination
         totalItems={filteredData.length}
         itemsPerPage={itemsPerPage}

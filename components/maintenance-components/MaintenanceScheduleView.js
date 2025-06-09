@@ -1,4 +1,3 @@
-// components/maintenance-components/MaintenanceScheduleView.js
 "use client";
 
 import { useState } from "react";
@@ -50,7 +49,6 @@ export default function MaintenanceScheduleView({ initialData }) {
 
             <Modal isOpen={isScheduleModalOpen} onClose={() => setIsScheduleModalOpen(false)} title="Tambah Jadwal Baru">
                 <form onSubmit={handleSaveSchedule} className="space-y-4 pt-2">
-                    {/* ... form fields ... */}
                      <div><label className="block text-sm font-medium text-gray-700">Aset</label><input name="asset" type="text" required className="mt-1 w-full p-2 border rounded" /></div><div><label className="block text-sm font-medium text-gray-700">Tipe Pemeliharaan</label><input name="maintenanceType" type="text" required className="mt-1 w-full p-2 border rounded" /></div><div><label className="block text-sm font-medium text-gray-700">Frekuensi</label><input name="frequency" type="text" placeholder="Contoh: Bulanan, 3 Bulan" required className="mt-1 w-full p-2 border rounded" /></div><div><label className="block text-sm font-medium text-gray-700">Tanggal Berikutnya</label><input name="nextDate" type="date" required className="mt-1 w-full p-2 border rounded" /></div><div><label className="block text-sm font-medium text-gray-700">PIC</label><input name="pic" type="text" required className="mt-1 w-full p-2 border rounded" /></div>
                     <div className="pt-2 flex justify-end gap-3"><button type="button" onClick={() => setIsScheduleModalOpen(false)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300">Batal</button><button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Simpan Jadwal</button></div>
                 </form>
